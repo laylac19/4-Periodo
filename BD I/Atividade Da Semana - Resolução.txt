@@ -1,0 +1,140 @@
+CREATE TABLE Especialidade (
+    Id_Especialidade SERIAL NOT NULL PRIMARY KEY,
+    Descricao VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Medico (
+    CRM INTEGER NOT NULL PRIMARY KEY,
+    NomeMedico VARCHAR(30) NOT NULL,
+    CPF_Medico VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE MedicoEspecialidade (
+    Id_Especialidade INTEGER NOT NULL,
+    CRM INTEGER NOT NULL,
+	FOREIGN KEY (Id_Especialidade) REFERENCES Especialidade (Id_Especialidade),
+	FOREIGN KEY (CRM) REFERENCES Medico (CRM)
+);
+
+CREATE TABLE Paciente (
+    Id_Paciente SERIAL NOT NULL PRIMARY KEY,
+    NomePaciente VARCHAR,
+    CPF_Paciente VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE Consulta (
+    Id_Consulta SERIAL NOT NULL PRIMARY KEY,
+    Descricao VARCHAR(100) NOT NULL,
+    DataConsulta DATE,
+    CRM INTEGER,
+	FOREIGN KEY (CRM) REFERENCES Medico (CRM),
+    Id_Paciente INTEGER,
+	FOREIGN KEY (Id_Paciente) REFERENCES Paciente (Id_Paciente)
+);
+
+/*---------------- SELECT ----------------*/
+select * from Especialidade;
+select * from Medico;
+select * from MedicoEspecialidade;
+select * from Consulta;
+select * from Paciente;
+
+/*---------------- INSERT TABELA Especialidade ----------------*/
+INSERT INTO Especialidade (Descricao) VALUES ('Acupuntura');
+INSERT INTO Especialidade (Descricao) VALUES ('Cirurgia Cardiovascular');
+INSERT INTO Especialidade (Descricao) VALUES ('Dermatologia');
+INSERT INTO Especialidade (Descricao) VALUES ('Neurologia');
+INSERT INTO Especialidade (Descricao) VALUES ('Geriatria');
+
+/*---------------- INSERT TABELA Medico ----------------*/
+INSERT INTO Medico (CRM, NomeMedico, CPF_Medico) VALUES (852, 'Carlos', 4587532518);
+INSERT INTO Medico (CRM, NomeMedico, CPF_Medico) VALUES (456, 'Paulo', 85246578159);
+INSERT INTO Medico (CRM, NomeMedico, CPF_Medico) VALUES (753, 'Sandra', 752148602518);
+INSERT INTO Medico (CRM, NomeMedico, CPF_Medico) VALUES (951, 'Karla', 14358246750);
+INSERT INTO Medico (CRM, NomeMedico, CPF_Medico) VALUES (123, 'Ryhs', 14254815615);
+		
+/*---------------- INSERT TABELA MedicoEspecialidade ----------------*/
+INSERT INTO MedicoEspecialidade (Id_Especialidade, CRM) VALUES (2,123);
+INSERT INTO MedicoEspecialidade (Id_Especialidade, CRM) VALUES (5,951);
+INSERT INTO MedicoEspecialidade (Id_Especialidade, CRM) VALUES (1,456);
+INSERT INTO MedicoEspecialidade (Id_Especialidade, CRM) VALUES (4,852);
+INSERT INTO MedicoEspecialidade (Id_Especialidade, CRM) VALUES (3,753);
+
+/*---------------- INSERT TABELA Paciente ----------------*/
+INSERT INTO Paciente (NomePaciente, CPF_Paciente) VALUES ('Alison', 14558744725);
+INSERT INTO Paciente (NomePaciente, CPF_Paciente) VALUES ('Carla', 58246300218);
+INSERT INTO Paciente (NomePaciente, CPF_Paciente) VALUES ('Paulo', 23544457820);
+INSERT INTO Paciente (NomePaciente, CPF_Paciente) VALUES ('Marivaldo', 55248753692);
+INSERT INTO Paciente (NomePaciente, CPF_Paciente) VALUES ('Ana', 55268523658);
+INSERT INTO Paciente (NomePaciente, CPF_Paciente) VALUES ('Josi', 45236822569);
+INSERT INTO Paciente (NomePaciente, CPF_Paciente) VALUES ('Antonio', 6545222584);
+INSERT INTO Paciente (NomePaciente, CPF_Paciente) VALUES ('Ze', 44758677458);
+
+/*---------------- INSERT TABELA Consulta ----------------*/
+
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-01-03', 'Sessao de Acupuntura', 456, 2);
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-03-25', 'Cirurgia De Reparo de Válvula', 123, 3);
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-04-05', 'Cirurgia De Reparo de Válvula', 123, 1);
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-02-15', 'Sessao de Acupuntura', 456, 4);
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-05-08', 'Ressonância Magnética do Crânio',852, 5);
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-05-10', 'Revisao de Cirurgia',123, 6);
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-06-21', 'Limpeza de Pele',753, 7);
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-10-25', 'Limpeza de Pele',753, 8);
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-10-25', 'Exames de Rotina',951, 2);
+INSERT INTO Consulta (DataConsulta, Descricao, CRM, Id_Paciente) VALUES ('2021-11-02', 'Revisao de Cirurgia',123, 5);
+
+
+/*---------------- SELECT ----------------*/
+select * from Especialidade;
+select * from Medico;
+select * from MedicoEspecialidade;
+select * from Consulta;
+select * from Paciente;
+
+/* Crie um comando DDL que adicione um campo rg (20 caracteres) na tabela paciente. */
+ALTER TABLE Paciente ADD COLUMN RG VARCHAR(20);
+
+/* Crie um comando DDL que altere a tabela especialidade e não permita o cadastro de 
+duas especialidades com o mesma descrição. */
+ALTER TABLE Especialidade ADD CONSTRAINT EspecialidadeUnica UNIQUE (Descricao);
+
+/* Crie um comando DDL que retire o atributo descricao da tabela consulta e outro que 
+adicione um campo texto com o nome descricaoconsulta. */
+ALTER TABLE Consulta DROP COLUMN Descricao;
+ALTER TABLE Consulta ADD COLUMN DescricaoConsulta VARCHAR(50);
+
+/* Crie um comando DDL que adicione um campo no paciente do tipo sexo com 1 
+caractere (M ou F) com o valor default ‘M’. */
+ALTER TABLE Paciente ADD COLUMN Sexo VARCHAR(1) DEFAULT 'M' CHECK (Sexo ='M' or Sexo ='F');
+
+/* Crie os comandos DDLs que adicione uma entidade Cidade(idCidade, nomeCidade) e relacione 
+a cidade com o médico e o paciente. Um médico e um paciente só podem ser de uma cidade e 
+uma cidade podeter vários médicos e pacientes. */
+CREATE TABLE Cidade (
+	Id_Cidade SERIAL PRIMARY KEY,
+	NomeCidade VARCHAR(20)
+);
+
+ALTER TABLE Medico 
+	ADD COLUMN Id_Cidade INTEGER,
+	ADD CONSTRAINT fk_Cidade FOREIGN KEY (Id_Cidade) REFERENCES Cidade (Id_Cidade);
+
+ALTER TABLE Paciente 
+	ADD COLUMN Id_Cidade INTEGER,
+	ADD CONSTRAINT fk_CidadePaciente FOREIGN KEY (Id_Cidade) REFERENCES Cidade (Id_Cidade);
+	
+INSERT INTO Cidade (NomeCidade) VALUES ('Colatina');
+INSERT INTO Cidade (NomeCidade) VALUES ('Linhares');
+INSERT INTO Cidade (NomeCidade) VALUES ('Vitória');
+INSERT INTO Cidade (NomeCidade) VALUES ('Serra');
+INSERT INTO Cidade (NomeCidade) VALUES ('Vila Velha');
+
+/* Selecione um paciente e tente excluir seu cadastro, relate o resultado retornado pelo banco de dados; */
+DELETE FROM Paciente WHERE Id_Paciente = 1;
+/* update or delete on table "paciente" violates foreign key constraint "consulta_id_paciente_fkey" on table "consulta"
+select * from movimentacao;*/
+
+/* Exclua as consultas do paciente que selecionou, em seguida exclua seu cadastro, descreva o resultado.  */
+DELETE FROM Consulta WHERE Id_Paciente in (SELECT Id_Paciente FROM Paciente WHERE Id_Paciente = 1);
+/* DELETE 1
+Query returned successfully in 83 msec. */

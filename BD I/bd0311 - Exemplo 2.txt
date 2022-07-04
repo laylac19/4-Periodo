@@ -1,0 +1,38 @@
+CREATE TABLE Contribuinte (
+    CPF INTEGER UNIQUE  NOT NULL,
+    Nome VARCHAR(30) NOT NULL,
+	Endereco VARCHAR(50) NOT NULL,
+	Telefone VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE DeclaracaoImpostoDeRenda (
+    Cpf INTEGER NOT NULL,
+    Ano_Exercicio DATE NOT NULL,
+	Ano_Base DATE NOT NULL,
+	Valor INTEGER NOT NULL,
+	Restituicao_Pagamento BOOLEAN NOT NULL,
+	FOREIGN KEY (Cpf) REFERENCES Contribuinte (Cpf)
+);
+
+CREATE TABLE Malha_Fina (
+    Identificador INTEGER UNIQUE NOT NULL,
+    Ano_Exercicio DATE NOT NULL
+);
+
+CREATE TABLE Contribuinte_MalhaFina (
+    Identificador INTEGER NOT NULL,
+    CPF INTEGER NOT NULL,
+	Valor INTEGER NOT NULL,
+	Qt_Prestacoes INTEGER NOT NULL,
+	FOREIGN KEY (Identificador) REFERENCES Malha_Fina (Identificador),
+	FOREIGN KEY (CPF) REFERENCES Contribuinte (CPF)
+);
+
+/*---------------- INSERT TABELA Contribuinte ----------------*/
+select * from Contribuinte;
+
+INSERT INTO Contribuinte (CPF, Nome, Endereco, Telefone) VALUES (14375385218,'Sarah', 'Prityan', '279984265718');
+INSERT INTO usuario (nome, sexo, data_nascimento, endereco) VALUES ('Igor Carlos Pulini', 'M', '1972-01-15', 'Jose Passos' );
+INSERT INTO usuario (nome, sexo, data_nascimento, endereco) VALUES ('Stephen', 'M', '1972-06-26','Av. Lagos');
+INSERT INTO usuario (nome, sexo, data_nascimento, endereco) VALUES ('Jane Austen', 'F','1980-03-19','Bath');
+INSERT INTO usuario (nome, sexo, data_nascimento, endereco) VALUES ('Julia', 'F','1978-10-22','Hogwarts');

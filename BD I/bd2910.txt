@@ -1,0 +1,120 @@
+DELETE FROM AUTORIA
+WHERE NR_OBRA = 1
+
+DELETE FROM OBRA
+WHERE NR_OBRA = 1
+
+DELETE FROM MOVIMENTA
+WHERE nr_obra in (SELECT nr_obra FROM livro WHERE nr_obra = 1);
+
+DELETE FROM obra
+WHERE nr_obra in (SELECT nr_obra FROM obra);
+
+
+################################################################
+CREATE TABLE GENERO (
+     ID_GENERO SERIAL NOT NULL PRIMARY KEY,
+     DESCRICAO VARCHAR(25) NOT NULL 
+);
+
+CREATE TABLE OBRA (
+    NR_OBRA SERIAL NOT NULL PRIMARY KEY,
+    TITULO VARCHAR (60) NOT NULL,
+    ID_GENERO INTEGER NOT NULL,
+    FOREIGN KEY (ID_GENERO) REFERENCES GENERO (ID_GENERO)
+);
+
+CREATE TABLE AUTOR (
+     ID_AUTOR SERIAL NOT NULL PRIMARY KEY,
+     NOME VARCHAR(25) NOT NULL 
+);
+
+CREATE TABLE AUTORIA (   
+	NR_OBRA  INTEGER NOT NULL,
+    ID_AUTOR INTEGER NOT NULL,
+    PRIMARY KEY (NR_OBRA, ID_AUTOR),
+    FOREIGN KEY (NR_OBRA) REFERENCES OBRA (NR_OBRA),
+    FOREIGN KEY (ID_AUTOR) REFERENCES AUTOR (ID_AUTOR) 
+);
+
+CREATE TABLE EDITORA (
+    ID_EDITORA SERIAL NOT NULL PRIMARY KEY,
+    NOME_FANTASIA VARCHAR(60) NOT NULL
+);
+
+CREATE TABLE LIVRO (
+    NR_LIVRO SERIAL NOT NULL PRIMARY KEY,
+    DATA_AQUISICAO  DATE  NOT NULL,
+    EDICAO  SMALLINT  NOT NULL,
+    NR_OBRA INTEGER REFERENCES OBRA (NR_OBRA),
+    ID_EDITORA INTEGER REFERENCES EDITORA(ID_EDITORA)
+);
+
+CREATE TABLE USUARIO (
+      MATRICULA SERIAL NOT NULL PRIMARY KEY,
+      NOME VARCHAR(50) NOT NULL,
+      SEXO CHAR(1) NOT NULL,
+      DATA_NASCIMENTO DATE NOT NULL,
+      ENDERECO VARCHAR(60) NOT NULL 
+);
+
+CREATE TABLE MOVIMENTACAO (   
+    MATRICULA INTEGER NOT NULL,
+    NR_LIVRO INTEGER NOT NULL,
+    DATA_EMPRESTIMO DATE NOT NULL,
+    DATA_PREVISTA DATE NOT NULL,
+    DATA_DEVOLUCAO DATE NOT NULL,
+    PRIMARY KEY (MATRICULA , NR_LIVRO, DATA_EMPRESTIMO ),
+    FOREIGN KEY (NR_LIVRO) REFERENCES LIVRO(NR_LIVRO),
+    FOREIGN KEY (MATRICULA) REFERENCES USUARIO(MATRICULA ) 
+);
+
+/*---------------- INSERT TABELA Genero ----------------*/
+select * from genero;
+
+INSERT INTO genero (descricao) VALUES ('Aventura');
+INSERT INTO genero (descricao) VALUES ('Romance');
+INSERT INTO genero (descricao) VALUES ('Ficçao');
+INSERT INTO genero (descricao) VALUES ('Drama');
+INSERT INTO genero (descricao) VALUES ('Terror');
+
+/*---------------- INSERT TABELA Obra ----------------*/
+select * from obra;
+
+INSERT INTO obra (titulo, id_genero) VALUES ('Os Goonies', 1);
+INSERT INTO obra (titulo, id_genero) VALUES ('IT - A Coisa', 5);
+INSERT INTO obra (titulo, id_genero) VALUES ('Corte De Espinhos e Rosas', 4);
+INSERT INTO obra (titulo, id_genero) VALUES ('Orgulho e Preconceito', 2);
+INSERT INTO obra (titulo, id_genero) VALUES ('Harry Potter', 3);
+
+/*---------------- INSERT TABELA Autor ----------------*/
+select * from autor;
+
+INSERT INTO autor (nome) VALUES ('Sara J. Maas');
+INSERT INTO autor (nome) VALUES ('Steven Spielberg');
+INSERT INTO autor (nome) VALUES ('Stephen King');
+INSERT INTO autor (nome) VALUES ('Jane Austen');
+INSERT INTO autor (nome) VALUES ('J. K. Rowlin');
+
+/*---------------- INSERT TABELA Autoria ----------------*/
+select * from autoria;
+
+INSERT INTO autoria (nr_obra, id_autor) VALUES (1, 2);
+INSERT INTO autoria (nr_obra, id_autor) VALUES (2, 3);
+INSERT INTO autoria (nr_obra, id_autor) VALUES (3, 1);
+INSERT INTO autoria (nr_obra, id_autor) VALUES (4, 4);
+INSERT INTO autoria (nr_obra, id_autor) VALUES (5, 5);
+
+/*---------------- INSERT TABELA Editora ----------------*/
+select * from editora;
+
+INSERT INTO editora (nome_fantasia) VALUES ('Darkside');
+INSERT INTO editora (nome_fantasia) VALUES ('Suma');
+INSERT INTO editora (nome_fantasia) VALUES ('Galera');
+INSERT INTO editora (nome_fantasia) VALUES ('Martin Claret');
+INSERT INTO editora (nome_fantasia) VALUES ('Rocco');
+
+/*---------------- INSERT TABELA Livro ----------------*/
+select * from livro;
+INSERT INTO livro (data_aquisicao, edicao, nr_obra, i) VALUES ();
+

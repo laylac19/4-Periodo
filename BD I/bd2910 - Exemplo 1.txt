@@ -1,0 +1,155 @@
+CREATE TABLE GENERO (
+     ID_GENERO SERIAL NOT NULL PRIMARY KEY,
+     DESCRICAO VARCHAR(25) NOT NULL 
+);
+
+CREATE TABLE OBRA (
+    NR_OBRA SERIAL NOT NULL PRIMARY KEY,
+    TITULO VARCHAR (60) NOT NULL,
+    ID_GENERO INTEGER NOT NULL,
+    FOREIGN KEY (ID_GENERO) REFERENCES GENERO (ID_GENERO)
+);
+
+CREATE TABLE AUTOR (
+     ID_AUTOR SERIAL NOT NULL PRIMARY KEY,
+     NOME VARCHAR(25) NOT NULL 
+);
+
+CREATE TABLE AUTORIA (   
+	NR_OBRA  INTEGER NOT NULL,
+    ID_AUTOR INTEGER NOT NULL,
+    PRIMARY KEY (NR_OBRA, ID_AUTOR),
+    FOREIGN KEY (NR_OBRA) REFERENCES OBRA (NR_OBRA),
+    FOREIGN KEY (ID_AUTOR) REFERENCES AUTOR (ID_AUTOR) 
+);
+
+CREATE TABLE EDITORA (
+    ID_EDITORA SERIAL NOT NULL PRIMARY KEY,
+    NOME_FANTASIA VARCHAR(60) NOT NULL
+);
+
+CREATE TABLE LIVRO (
+    NR_LIVRO SERIAL NOT NULL PRIMARY KEY,
+    DATA_AQUISICAO  DATE  NOT NULL,
+    EDICAO  SMALLINT  NOT NULL,
+    NR_OBRA INTEGER REFERENCES OBRA (NR_OBRA),
+    ID_EDITORA INTEGER REFERENCES EDITORA(ID_EDITORA)
+);
+
+CREATE TABLE USUARIO (
+      MATRICULA SERIAL NOT NULL PRIMARY KEY,
+      NOME VARCHAR(50) NOT NULL,
+      SEXO CHAR(1) NOT NULL,
+      DATA_NASCIMENTO DATE NOT NULL,
+      ENDERECO VARCHAR(60) NOT NULL 
+);
+
+CREATE TABLE MOVIMENTACAO (   
+    MATRICULA INTEGER NOT NULL,
+    NR_LIVRO INTEGER NOT NULL,
+    DATA_EMPRESTIMO DATE NOT NULL,
+    DATA_PREVISTA DATE NOT NULL,
+    DATA_DEVOLUCAO DATE NOT NULL,
+    PRIMARY KEY (MATRICULA , NR_LIVRO, DATA_EMPRESTIMO ),
+    FOREIGN KEY (NR_LIVRO) REFERENCES LIVRO(NR_LIVRO),
+    FOREIGN KEY (MATRICULA) REFERENCES USUARIO(MATRICULA ) 
+);
+
+/*---------------- INSERT TABELA Genero ----------------*/
+select * from genero;
+
+INSERT INTO genero (descricao) VALUES ('Aventura');
+INSERT INTO genero (descricao) VALUES ('Romance');
+INSERT INTO genero (descricao) VALUES ('Ficçao');
+INSERT INTO genero (descricao) VALUES ('Drama');
+INSERT INTO genero (descricao) VALUES ('Terror');
+
+/*---------------- INSERT TABELA Obra ----------------*/
+select * from obra;
+
+INSERT INTO obra (titulo, id_genero) VALUES ('Os Goonies', 1);
+INSERT INTO obra (titulo, id_genero) VALUES ('IT - A Coisa', 5);
+INSERT INTO obra (titulo, id_genero) VALUES ('Corte De Espinhos e Rosas', 4);
+INSERT INTO obra (titulo, id_genero) VALUES ('Orgulho e Preconceito', 2);
+INSERT INTO obra (titulo, id_genero) VALUES ('Harry Potter', 3);
+
+/*---------------- INSERT TABELA Autor ----------------*/
+select * from autor;
+
+INSERT INTO autor (nome) VALUES ('Sara J. Maas');
+INSERT INTO autor (nome) VALUES ('Steven Spielberg');
+INSERT INTO autor (nome) VALUES ('Stephen King');
+INSERT INTO autor (nome) VALUES ('Jane Austen');
+INSERT INTO autor (nome) VALUES ('J. K. Rowlin');
+
+/*---------------- INSERT TABELA Autoria ----------------*/
+select * from autoria;
+
+INSERT INTO autoria (nr_obra, id_autor) VALUES (1, 2);
+INSERT INTO autoria (nr_obra, id_autor) VALUES (2, 3);
+INSERT INTO autoria (nr_obra, id_autor) VALUES (3, 1);
+INSERT INTO autoria (nr_obra, id_autor) VALUES (4, 4);
+INSERT INTO autoria (nr_obra, id_autor) VALUES (5, 5);
+
+/*---------------- INSERT TABELA Editora ----------------*/
+select * from editora;
+
+INSERT INTO editora (nome_fantasia) VALUES ('Darkside');
+INSERT INTO editora (nome_fantasia) VALUES ('Suma');
+INSERT INTO editora (nome_fantasia) VALUES ('Galera');
+INSERT INTO editora (nome_fantasia) VALUES ('Martin Claret');
+INSERT INTO editora (nome_fantasia) VALUES ('Rocco');
+
+/*---------------- INSERT TABELA Livro ----------------*/
+select * from livro;
+
+INSERT INTO livro (data_aquisicao, edicao, nr_obra, id_editora) VALUES ('2021-01-25', 9, 1, 1);
+INSERT INTO livro (data_aquisicao, edicao, nr_obra, id_editora) VALUES ('2021-03-19', 2, 2, 2);
+INSERT INTO livro (data_aquisicao, edicao, nr_obra, id_editora) VALUES ('2021-05-08', 3, 3, 3);
+INSERT INTO livro (data_aquisicao, edicao, nr_obra, id_editora) VALUES ('2021-05-10', 3, 4, 4);
+INSERT INTO livro (data_aquisicao, edicao, nr_obra, id_editora) VALUES ('2021-10-19', 15, 5, 5);
+
+/*---------------- INSERT TABELA Usuário ----------------*/
+select * from usuario;
+
+INSERT INTO usuario (nome, sexo, data_nascimento, endereco) VALUES ('Sarah', 'F','1999-03-22','Prityan');
+INSERT INTO usuario (nome, sexo, data_nascimento, endereco) VALUES ('Igor Carlos Pulini', 'M', '1972-01-15', 'Jose Passos' );
+INSERT INTO usuario (nome, sexo, data_nascimento, endereco) VALUES ('Stephen', 'M', '1972-06-26','Av. Lagos');
+INSERT INTO usuario (nome, sexo, data_nascimento, endereco) VALUES ('Jane Austen', 'F','1980-03-19','Bath');
+INSERT INTO usuario (nome, sexo, data_nascimento, endereco) VALUES ('Julia', 'F','1978-10-22','Hogwarts');
+
+/*---------------- INSERT TABELA Movimentação ----------------*/
+select * from movimentacao;
+
+INSERT INTO movimentacao (matricula, nr_livro, data_emprestimo, data_prevista, data_devolucao) VALUES (1, 3,'2021-10-30','2021-11-07','2021-11-07');
+INSERT INTO movimentacao (matricula, nr_livro, data_emprestimo, data_prevista, data_devolucao) VALUES (2, 5,'2021-10-29','2021-11-06','2021-11-07');
+INSERT INTO movimentacao (matricula, nr_livro, data_emprestimo, data_prevista, data_devolucao) VALUES (3, 2,'2021-10-30','2021-11-06','2021-11-08');
+INSERT INTO movimentacao (matricula, nr_livro, data_emprestimo, data_prevista, data_devolucao) VALUES (4, 4,'2021-10-30','2021-11-05','2021-11-06');
+INSERT INTO movimentacao (matricula, nr_livro, data_emprestimo, data_prevista, data_devolucao) VALUES (5, 1,'2021-10-29','2021-11-05','2021-11-07');
+
+/*Crie um comando que altere a descrição do gênero 1 para ‘Love’.*/
+UPDATE genero SET descricao = 'Love' WHERE id_genero = 1;
+select * from genero;
+
+/*Crie um comando que altere a data de nascimento do usuário “Igor Carlos Pulini” para “01/11/1979”.*/
+UPDATE usuario SET data_nascimento = '1979-11-01' WHERE data_nascimento = '1972-01-15';
+select * from usuario;
+
+/*
+Crie a sequência de comandos necessários para apagar a obra 1. 
+(Considere que a obra 1 tenha vários livros e que estes livros possam ter movimentações. 
+Os comandos devem ser formulados na sequência correta de execução)
+*/
+obra->autoria->livro->movimentacao
+DELETE FROM movimentacao WHERE nr_livro in (SELECT nr_obra FROM livro WHERE nr_obra = 1);
+select * from movimentacao;
+
+DELETE FROM livro WHERE nr_obra = 1;
+select * from livro;
+
+DELETE FROM autoria WHERE nr_obra = 1;
+select * from autoria;
+
+DELETE FROM obra WHERE nr_obra = 1;
+select * from obra;
+
