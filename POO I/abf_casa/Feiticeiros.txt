@@ -1,0 +1,6 @@
+1 Satoru Gojo 70 1,80 Prythian
+2 Megumi Fushiguro 80 1,78 Daemanti
+3 Yuta Okkotsu 82 1,90 Velars
+4 Geto 100 1,90 Erykls
+2 Athah 20 1,30 Prythian
+
